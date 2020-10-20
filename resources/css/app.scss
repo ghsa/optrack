@@ -1,0 +1,80 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+.btn-default {
+    border: 2px solid #EEE !important;
+}
+
+.btn-default:hover {
+    background: #eee !important;
+    border: 2px solid #EEE !important;
+}
+
+h4 {
+    font-weight: bold !important;
+}
+
+
+.attribute {
+    font-family: 17px;
+    font-weight: bold !important;
+}
+
+h2 {
+    font-weight: bold;
+}
+h1{
+    font-weight: bold;
+    font-size: 30px;
+}
+h5 {
+    color: #005a73;
+    font-weight: bold;
+}
+.section2 {
+    background: #f7f7f7;
+}
+
+.section3 {
+    background: #fff;
+}
+.section4 {
+    background: #f7f7f7;
+}
+.color-blue {
+    color: #0095c0 !important;
+}
+.btn-site {
+    background: #0095c0 !important;
+    padding: 12px;
+    border: none !important;
+}
+
+.section5 {
+    padding: 70px;
+    background: url('/img/section5.png') no-repeat right #fcfcfc;
+}
+
+.logo {
+    width: 100%;
+    max-width: 300px;
+}
+
+.img-partner {
+    width: 94%;
+}
+
+@media only screen and (max-width: 600px) {
+  .section5 {
+    background: white !important;
+  }
+}
+
+.copyright {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 50px;
+}
