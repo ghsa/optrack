@@ -17,7 +17,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'buy_percentage' => env('BUY_PERCENTAGE', 0.6),
+    'buy_percentage' => env('BUY_PERCENTAGE', 0.4),
     'days_to_roll' => env('DAYS_TO_ROLL', 5),
 
     /*
