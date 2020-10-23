@@ -3,27 +3,21 @@
 namespace App\Services;
 
 use App\Models\Stock;
-use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\UnauthorizedException;
 
 // https://docs.oplab.com.br/
 class OplabService implements StockTrackerInterface
 {
-    public function getAccessToken(User $user)
+    public function getAccessToken()
     {
-        if ($user->oplab_email == null || $user->oplab_password == null) {
-            throw new UnauthorizedException("No email or password information.");
-        }
         try {
             $response = Http::post(config('services.oplab.url') . '/users/authenticate', [
-                'email' => $user->oplab_email,
-                'password' => $user->oplab_password,
+                'email' => config('services.oplab.email'),
+                'password' => config('services.oplab.password'),
             ]);
             $data = $response->json();
             $accessToken = $data['access-token'];
-            $user->oplab_token = $accessToken;
-            $user->save();
             return $accessToken;
         } catch (\Exception $e) {
             \Log::error($e->getMessage());
@@ -31,15 +25,11 @@ class OplabService implements StockTrackerInterface
         }
     }
 
-    public function getStock(Stock $stock)
+    public function getStock($accessToken, Stock $stock)
     {
-        if (empty($stock->user->oplab_token)) {
-            throw new UnauthorizedException("Not authorized");
-        }
-
         try {
             $response = Http::withHeaders([
-                'Access-Token' => $stock->user->oplab_token
+                'Access-Token' => $accessToken
             ])
                 ->get(config('services.oplab.url') . '/studies/' . $stock->initials, []);
             $data = $response->json();

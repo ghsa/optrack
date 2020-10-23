@@ -49,10 +49,14 @@ return [
         ],
 
         'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'driver' => 's3',
+            'key'    => 'PACAB7ETNDYEAM25JPMQ',
+            'secret' => 'Pqz586vAIyV7vMulX4uTJrDIxPoXHw2TIB7omcYk1BM',
+            'region' => 'nyc3',
+            'endpoint' => 'https://nyc3.digitaloceanspaces.com',
+            'bucket' => 'qplay',
             'visibility' => 'public',
+            'url' => 'https://qplay.nyc3.digitaloceanspaces.com'
         ],
 
         's3' => [

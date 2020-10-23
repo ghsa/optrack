@@ -17,6 +17,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'buy_percentage' => env('BUY_PERCENTAGE', 0.6),
+    'days_to_roll' => env('DAYS_TO_ROLL', 5),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

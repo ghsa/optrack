@@ -12,6 +12,20 @@
         </div>
     </div>
     <hr class="sidebar-divider my-0">
+    <li class="nav-item {{ strpos(Route::currentRouteName(), 'dashboard.userOption.') !== false ? 'active' : ''  }}">
+        <a class="nav-link " href="{{route('dashboard.userOption.index')}}">
+            <i class="fas fa-fw fa-tag"></i>
+            <span>Opções</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ strpos(Route::currentRouteName(), 'dashboard.userStock.') !== false ? 'active' : ''  }}">
+        <a class="nav-link " href="{{route('dashboard.userStock.index')}}">
+            <i class="fas fa-fw fa-tag"></i>
+            <span>Posições</span>
+        </a>
+    </li>
+
     <li class="nav-item {{ strpos(Route::currentRouteName(), 'dashboard.stock.') !== false ? 'active' : ''  }}">
         <a class="nav-link " href="{{route('dashboard.stock.index')}}">
             <i class="fas fa-fw fa-tag"></i>

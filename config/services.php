@@ -30,7 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'oplab' => [
-        'url' => 'https://api.oplab.com.br/v2'
+        'url' => 'https://api.oplab.com.br/v2',
+        'email' => env('OPLAB_EMAIL', 'mvsa3@msn.com'),
+        'password' => env('OPLAB_PASSWORD', '644280')
     ]
 
 ];

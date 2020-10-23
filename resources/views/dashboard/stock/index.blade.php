@@ -31,9 +31,8 @@
         <tr>
             <th></th>
             <th>Name</th>
-            <th>PM</th>
-            <th>QTD</th>
-            <th>Fundamentalista</th>
+            <th>Preço</th>
+            <th>Variação</th>
             <th></th>
         </tr>
     </thead>
@@ -44,9 +43,8 @@
             <td>
                 {{$result->name}}
             </td>
-            <td>R$ {{$result->buy_price}}</td>
-            <td>{{$result->amount}}</td>
-            <td>R$ {{$result->fundamentalist_price}}</td>
+            <td>R$ {{$result->current_price}}</td>
+            <td>{{$result->variation}}</td>
             <td>
                 <a href="{{route($result->getBaseRouteName() . '.show', ['id' => $result->id])}}" class="btn btn-primary btn-sm">
                     <i class="fas fa-edit"></i>

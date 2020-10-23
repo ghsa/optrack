@@ -15,13 +15,16 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('initials');
             $table->string('image')->nullable();
-            $table->string('buy_price')->nullable();
-            $table->string('fundamentalist_price')->nullable();
-            $table->string('amount')->nullable();
+            $table->decimal('current_price', 10, 2)->nullable();
+            $table->smallInteger('short_trend')->nullable();
+            $table->smallInteger('middle_trend')->nullable();
+            $table->integer('current_iv')->nullable();
+            $table->dateTime('last_api_update')->nullable();
+            $table->decimal('variation', 10, 2)->nullable();
+
             $table->timestamps();
         });
     }

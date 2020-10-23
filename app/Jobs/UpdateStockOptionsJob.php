@@ -16,6 +16,7 @@ class UpdateStockOptionsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $accessToken;
     public $stock;
 
     /**
@@ -23,9 +24,10 @@ class UpdateStockOptionsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Stock $stock)
+    public function __construct(string $accessToken, Stock $stock)
     {
         $this->stock = $stock;
+        $this->accessToken = $accessToken;
     }
 
     /**
@@ -35,14 +37,13 @@ class UpdateStockOptionsJob implements ShouldQueue
      */
     public function handle()
     {
-        $stockInfo = app(StockTrackerInterface::class)->getStock($this->stock);
+        $stockInfo = app(StockTrackerInterface::class)->getStock($this->accessToken, $this->stock);
         if ($stockInfo == false || empty($stockInfo['info'])) {
             return false;
         }
 
         $this->updateStockInformation($stockInfo['info']);
         $this->updateOptionsInformation($stockInfo['series']);
-        dd($stockInfo);
     }
 
     private function updateStockInformation($info)

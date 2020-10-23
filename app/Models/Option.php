@@ -22,4 +22,9 @@ class Option extends Model
         'volatility',
         'variation'
     ];
+
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
+    }
 }

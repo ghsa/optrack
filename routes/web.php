@@ -3,7 +3,8 @@
 use App\Jobs\UpdateStockOptionsJob;
 use App\Models\Stock;
 use App\Models\User;
-use App\Services\OplabService;
+use App\Repositories\StockRepositories;
+use App\Scopes\UserScope;
 use App\Services\StockTrackerInterface;
 use Illuminate\Support\Facades\Route;
 
@@ -18,17 +19,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/testJob', function () {
-    $stock = Stock::first();
-    app(StockTrackerInterface::class)->getAccessToken($stock->user);
-    dispatch(new UpdateStockOptionsJob($stock));
+Route::get('/updateStocks', function () {
+    app(StockRepositories::class)->updateAllStocks();
 });
 
 Route::get('/test', function () {
     $user = User::first();
     app(StockTrackerInterface::class)->getAccessToken($user);
-    $info = app(StockTrackerInterface::class)->getStock($user, 'COGN3');
-    dd($info);
+    $stock = Stock::withoutGlobalScope(UserScope::class)->first();
+    $info = app(StockTrackerInterface::class)->getStock($stock);
 });
 
 Route::get('login', 'AuthController@index')->name('login');
@@ -39,6 +38,35 @@ Route::group(['prefix' => '', 'middleware' => 'auth', 'as' => 'dashboard.'], fun
 
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('singout', 'AuthController@signOut')->name('auth.signout');
+    Route::get('op-simulator/{id}', 'OpSimulatorController@simulator')->name('opSimulator');
+
+    // Options
+    Route::group(['prefix' => 'option', 'as' => 'option.'], function () {
+        Route::get('/', 'OptionController@index')->name('index');
+        Route::get('/show/{id}', 'OptionController@show')->name('show');
+    });
+
+    // UserOption
+    Route::group(['prefix' => 'userOption', 'as' => 'userOption.'], function () {
+        Route::get('/', 'UserOptionController@index')->name('index');
+        Route::get('/show/{id}', 'UserOptionController@show')->name('show');
+        Route::post('/', 'UserOptionController@index')->name('search');
+        Route::put('/{id}', 'UserOptionController@update')->name('update');
+        Route::get('/create', 'UserOptionController@create')->name('create');
+        Route::post('/store', 'UserOptionController@store')->name('store');
+        Route::delete('/destroy/{id}', 'UserOptionController@destroy')->name('destroy');
+    });
+
+    // UserStocks
+    Route::group(['prefix' => 'userStock', 'as' => 'userStock.'], function () {
+        Route::get('/', 'UserStockController@index')->name('index');
+        Route::get('/show/{id}', 'UserStockController@show')->name('show');
+        Route::post('/', 'UserStockController@index')->name('search');
+        Route::put('/{id}', 'UserStockController@update')->name('update');
+        Route::get('/create', 'UserStockController@create')->name('create');
+        Route::post('/store', 'UserStockController@store')->name('store');
+        Route::delete('/destroy/{id}', 'UserStockController@destroy')->name('destroy');
+    });
 
     // Stocks
     Route::group(['prefix' => 'stock', 'as' => 'stock.'], function () {

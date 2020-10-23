@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use LiliControl\LiliModel;
 
@@ -11,13 +10,9 @@ class Stock extends LiliModel
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'name',
         'image',
         'initials',
-        'buy_price',
-        'amount',
-        'fundamentalist_price',
         'current_price',
         'short_trend',
         'middle_trend',
@@ -28,11 +23,6 @@ class Stock extends LiliModel
 
     const TREND_HIGH = 1;
     const TREND_NONE = 0;
-
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
 
     public function getValidationFields()
     {
@@ -52,5 +42,21 @@ class Stock extends LiliModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getOptions()
+    {
+        return Option::where('stock_id', $this->id)
+            ->orderBy('type')
+            ->orderBy('due_date')
+            ->orderBy('strike')
+            ->get();
+    }
+
+    public function getUserStock(User $user)
+    {
+        return UserStock::where('user_id', $user->id)
+            ->where('stock_id', $this->id)
+            ->first();
     }
 }

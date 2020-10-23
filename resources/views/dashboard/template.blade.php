@@ -43,7 +43,7 @@
                     </ul>
                 </nav>
                 @endauth
-                <div class="container-fluid">
+                <div class="container-fluid" id='app'>
                     @yield('content')
                 </div>
             </div>
@@ -55,6 +55,7 @@
     </a>
 
     <!-- Bootstrap core JavaScript-->
+    <script src="/js/app.js"></script>
     <script src="/dashboard/vendor/jquery/jquery.min.js"></script>
     <script src="/dashboard/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/dashboard/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -69,6 +70,7 @@
             $('#summernote').summernote();
         });
     </script>
+    @yield('scripts')
 </body>
 
 </html>
