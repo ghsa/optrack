@@ -13,11 +13,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr
-                    v-for="option in options"
-                    :key="option.id"
-                >
-                    <td><a :href="'/userOption/create?option_id='+option.id" class='btn btn-success btn-sm'>Vender</a></td>
+                <tr v-for="option in options" :key="option.id">
+                    <td>
+                        <a
+                            :href="'/userOption/create?option_id=' + option.id"
+                            class="btn btn-success btn-sm"
+                            >Vender</a
+                        >
+                    </td>
                     <td>{{ option.type }}</td>
                     <td>{{ option.name }}</td>
                     <td>R$ {{ option.strike }}</td>
@@ -37,9 +40,14 @@
                         {{ ((option.price / option.strike) * 100).toFixed(2) }}%
                     </td>
                     <td>{{ option.days_to_maturity }}</td>
-                    <td><button class='btn btn-sm btn-primary'
-                    @click="selectOption(option)"
-                    >Detalhes</button></td>
+                    <td>
+                        <button
+                            class="btn btn-sm btn-primary"
+                            @click="selectOption(option)"
+                        >
+                            Detalhes
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -66,177 +74,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="title">Valor Atual</div>
-                                <div class="big-value">
-                                    R$ {{ stock.current_price }}
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="title">Strike</div>
-                                <div class="big-value">
-                                    R$ {{ option.strike }} ({{
-                                        (
-                                            ((option.strike -
-                                                stock.current_price) /
-                                                stock.current_price) *
-                                            100
-                                        ).toFixed(2)
-                                    }}%)
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="title">Premium</div>
-                                <div class="big-value">
-                                    R$ {{ option.price }} ({{
-                                        (
-                                            (option.price /
-                                                stock.current_price) *
-                                            100
-                                        ).toFixed(2)
-                                    }}%)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="box mt-4">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="title">Aumento de 10%</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (stock.current_price * 1.1).toFixed(
-                                                2
-                                            )
-                                        }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Recompra com 5 dias</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{ recompra10.call.premium.toFixed(2) }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Prejuizo</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (
-                                                option.price -
-                                                recompra10.call.premium
-                                            ).toFixed(2)
-                                        }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Aumento de 15%</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (
-                                                stock.current_price * 1.15
-                                            ).toFixed(2)
-                                        }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">
-                                        Rolagem 28 Dias +15%
-                                    </div>
-                                    <div class="big-value">
-                                        R$
-                                        {{ rolagem15.call.premium.toFixed(2) }}
-                                        <span style="font-size: 12px">{{
-                                            rolagem15.call.delta.toFixed(2)
-                                        }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Saldo</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (
-                                                rolagem15.call.premium - (recompra10.call.premium - option.price) 
-                                            ).toFixed(2)
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 20% de aumento -->
-                        <div class="box mt-4">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="title">Aumento de 20%</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (stock.current_price * 1.2).toFixed(
-                                                2
-                                            )
-                                        }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Recompra com 5 dias</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{ recompra20.call.premium.toFixed(2) }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Prejuizo</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (
-                                                option.price -
-                                                recompra20.call.premium
-                                            ).toFixed(2)
-                                        }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Aumento de 25%</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (
-                                                stock.current_price * 1.25
-                                            ).toFixed(2)
-                                        }}
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">
-                                        Rolagem 28 Dias +25%
-                                    </div>
-                                    <div class="big-value">
-                                        R$
-                                        {{ rolagem25.call.premium.toFixed(2) }}
-                                        <span style="font-size: 12px">{{
-                                            rolagem25.call.delta.toFixed(2)
-                                        }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="title">Saldo</div>
-                                    <div class="big-value">
-                                        R$
-                                        {{
-                                            (
-                                                rolagem25.call.premium - (recompra20.call.premium - option.price) 
-                                            ).toFixed(2)
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <op-simulator :option="option" :stock="stock" />
                     </div>
                     <div class="modal-footer">
                         <button
@@ -295,7 +133,7 @@ export default {
         selectOption(option) {
             this.option = option;
             $("#op-simulator").modal("show");
-            this.calculate();
+            //this.calculate();
         },
         close() {
             $("#op-simulator").modal("hide");

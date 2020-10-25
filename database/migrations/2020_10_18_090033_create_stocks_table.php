@@ -24,7 +24,6 @@ class CreateStocksTable extends Migration
             $table->integer('current_iv')->nullable();
             $table->dateTime('last_api_update')->nullable();
             $table->decimal('variation', 10, 2)->nullable();
-
             $table->timestamps();
         });
     }

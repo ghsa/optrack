@@ -27,4 +27,14 @@ class Option extends Model
     {
         return $this->belongsTo(Stock::class);
     }
+
+    public function isITM()
+    {
+        if (($this->type == 'CALL' && $this->strike <= $this->stock->current_price)
+            || $this->type == 'PUT' && $this->strike >= $this->stock->current_price
+        ) {
+            return true;
+        }
+        return false;
+    }
 }

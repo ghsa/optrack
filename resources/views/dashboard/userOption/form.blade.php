@@ -80,3 +80,9 @@
         </div>
     </div>
 </div>
+@if(!empty($model))
+<hr>
+<div class='col-sm-12'>
+    <op-simulator :premium="{{$model->sell_price}}" :option="{{$model->option}}" :stock="{{$model->option->stock}}" />
+</div>
+@endif

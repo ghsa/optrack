@@ -18,11 +18,31 @@
                     {!! Form::text('initials', null, ['class' => 'form-control']) !!}
                 </div>
             </div>
+
+            @if(!empty($model->id))
             <div class="col-sm-12">
-                @if(!empty($model->id))
-                <p>Preço Atual</p>
-                <h2>R$ {{$model->current_price}}</h2>
-                @endif
+                <div class='row'>
+                    <div class="col-sm-3">
+                        <p>Preço Atual</p>
+                        <h2>R$ {{$model->current_price}}</h2>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Tendência</p>
+                        <button class='btn btn-sm btn-{{\App\Models\Stock::$trendsClass[$model->short_trend]}}'>{{\App\Models\Stock::$trends[$model->short_trend]}}</button> /
+                        <button class='btn btn-sm btn-{{\App\Models\Stock::$trendsClass[$model->middle_trend]}}'>{{\App\Models\Stock::$trends[$model->middle_trend]}}</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <p>Preço Atual</p>
+                        <h2>R$ {{$model->current_price}}</h2>
+                    </div>
+                </div>
+            </div>
+            @endif
+            <div class="col-sm-12">
+                <div class="form-group">
+                    {!! Form::label('obs', 'OBS') !!}
+                    {!! Form::textarea('obs', null, ['class' => 'form-control summernote']) !!}
+                </div>
             </div>
         </div>
     </div>

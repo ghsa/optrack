@@ -79,4 +79,11 @@ class UserOption extends LiliModel
         }
         return (($this->sell_price - $this->buy_price));
     }
+
+    public function applyQueryBuilder($builder)
+    {
+        $builder->select('user_options.*')
+            ->join('options', 'options.id', '=', 'user_options.option_id');
+        return $builder;
+    }
 }

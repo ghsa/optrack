@@ -19,10 +19,24 @@ class Stock extends LiliModel
         'current_iv',
         'last_api_update',
         'variation',
+        'obs'
     ];
 
     const TREND_HIGH = 1;
+    const TREND_LOW = -1;
     const TREND_NONE = 0;
+
+    public static $trends = [
+        self::TREND_HIGH => "Alta",
+        self::TREND_NONE => "Neutra",
+        self::TREND_LOW => "Baixa",
+    ];
+
+    public static $trendsClass = [
+        self::TREND_HIGH => "success",
+        self::TREND_NONE => "primary",
+        self::TREND_LOW => "danger",
+    ];
 
     public function getValidationFields()
     {

@@ -33,6 +33,7 @@
             <th>Name</th>
             <th>Preço</th>
             <th>Variação</th>
+            <th>Curto/Médio</th>
             <th></th>
         </tr>
     </thead>
@@ -43,8 +44,12 @@
             <td>
                 {{$result->name}}
             </td>
-            <td>R$ {{$result->current_price}}</td>
-            <td>{{$result->variation}}</td>
+            <td style='font-size: 15px;font-weight:bold'>R$ {{$result->current_price}}</td>
+            <td style='font-weight: bold; color: {{$result->variation < 0 ? 'red' : 'green'}}'>{{$result->variation}}%</td>
+            <td>
+                <button class='btn btn-sm btn-{{\App\Models\Stock::$trendsClass[$result->short_trend]}}'>{{\App\Models\Stock::$trends[$result->short_trend]}}</button>
+                <button class='btn btn-sm btn-{{\App\Models\Stock::$trendsClass[$result->middle_trend]}}'>{{\App\Models\Stock::$trends[$result->middle_trend]}}</button>
+            </td>
             <td>
                 <a href="{{route($result->getBaseRouteName() . '.show', ['id' => $result->id])}}" class="btn btn-primary btn-sm">
                     <i class="fas fa-edit"></i>

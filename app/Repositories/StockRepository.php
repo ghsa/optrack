@@ -11,7 +11,6 @@ class StockRepositories
 
     public function updateStockInformation(Stock $stock, $info)
     {
-        dump($info);
         $stock->current_price = $info['close'];
         $stock->short_trend = $info['short-term-trend'];
         $stock->middle_trend = $info['middle-term-trend'];

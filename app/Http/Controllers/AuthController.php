@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\StockRepositories;
 
 class AuthController extends Controller
 {
@@ -24,8 +25,10 @@ class AuthController extends Controller
                 'password' => request()->password
             ]
         )) {
+            app(StockRepositories::class)->updateAllStocks();
             return redirect()->route('dashboard.home');
         }
+
 
         return back()->withErrors("Email and password don't match");
     }

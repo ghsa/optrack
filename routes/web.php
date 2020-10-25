@@ -30,7 +30,7 @@ Route::get('/test', function () {
     $info = app(StockTrackerInterface::class)->getStock($stock);
 });
 
-Route::get('login', 'AuthController@index')->name('login');
+Route::get('/', 'AuthController@index')->name('login');
 Route::post('singin', 'AuthController@signIn')->name('auth.signin');
 Route::get('firstUser', 'AuthController@firstUser');
 

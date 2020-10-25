@@ -2049,168 +2049,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2234,8 +2072,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     selectOption: function selectOption(option) {
       this.option = option;
-      $("#op-simulator").modal("show");
-      this.calculate();
+      $("#op-simulator").modal("show"); //this.calculate();
     },
     close: function close() {
       $("#op-simulator").modal("hide");
@@ -2293,18 +2130,217 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["option"],
-  mounted: function mounted() {},
+  props: ["option", "stock", "premium"],
+  data: function data() {
+    return {
+      days: 5,
+      time: 0.003968,
+      recompra10: null,
+      recompra20: null,
+      rolagem15: null,
+      rolagem25: null,
+      calculated: false
+    };
+  },
+  mounted: function mounted() {
+    this.calculate();
+
+    if (this.premium) {
+      this.option.price = this.premium;
+    }
+  },
+  watch: {
+    option: function option(newValue, oldValue) {
+      this.calculate();
+    }
+  },
   methods: {
-    load: function load() {
-      console.log("Loading");
-    },
-    loadOption: function loadOption() {
-      console.log("Carregando Opção");
+    calculate: function calculate() {
+      var data = {
+        spot: this.option.spot_price,
+        strike: this.option.strike,
+        interest: 2.0,
+        expiration: this.time * this.days,
+        volatility: this.stock.current_iv
+      }; // Simulação de 5 dias para o strike aumento de 10%
+
+      data.expiration = this.time * 5;
+      data.spot = this.stock.current_price * 1.1;
+      this.recompra10 = Object(_bscalc__WEBPACK_IMPORTED_MODULE_0__["default"])(data); // Simulação de 5 dias para o strike aumento de 20%
+
+      data.spot = this.stock.current_price * 1.2;
+      this.recompra20 = Object(_bscalc__WEBPACK_IMPORTED_MODULE_0__["default"])(data); // Simulação de rolagem com 28 dias e 15%
+
+      data.expiration = this.time * 28;
+      data.strike = this.stock.current_price * 1.15;
+      data.spot = this.stock.current_price * 1.1;
+      this.rolagem15 = Object(_bscalc__WEBPACK_IMPORTED_MODULE_0__["default"])(data); // Simulação de rolagem com 28 dias e 25%
+
+      data.expiration = this.time * 28;
+      data.strike = this.stock.current_price * 1.25;
+      data.spot = this.stock.current_price * 1.2;
+      this.rolagem25 = Object(_bscalc__WEBPACK_IMPORTED_MODULE_0__["default"])(data);
+      this.calculated = true;
     }
   }
 });
@@ -6742,6 +6778,25 @@ __webpack_require__.r(__webpack_exports__);
 /***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ListOptionsComponent.vue?vue&type=style&index=0&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ListOptionsComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.box {\n    background: #f5f5f5;\n    padding: 10px;\n    border-radius: 5px;\n}\n.title {\n    font-size: 14px;\n    color: #444;\n}\n.big-value {\n    font-size: 22px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css& ***!
   \**************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -59518,6 +59573,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./OpSimulatorComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -60179,7 +60264,11 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Detalhes")]
+                [
+                  _vm._v(
+                    "\n                        Detalhes\n                    "
+                  )
+                ]
               )
             ])
           ])
@@ -60216,293 +60305,16 @@ var render = function() {
                     _vm._m(1)
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "modal-body" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-sm-4" }, [
-                        _c("div", { staticClass: "title" }, [
-                          _vm._v("Valor Atual")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "big-value" }, [
-                          _vm._v(
-                            "\n                                R$ " +
-                              _vm._s(_vm.stock.current_price) +
-                              "\n                            "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-sm-4" }, [
-                        _c("div", { staticClass: "title" }, [_vm._v("Strike")]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "big-value" }, [
-                          _vm._v(
-                            "\n                                R$ " +
-                              _vm._s(_vm.option.strike) +
-                              " (" +
-                              _vm._s(
-                                (
-                                  ((_vm.option.strike -
-                                    _vm.stock.current_price) /
-                                    _vm.stock.current_price) *
-                                  100
-                                ).toFixed(2)
-                              ) +
-                              "%)\n                            "
-                          )
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-sm-4" }, [
-                        _c("div", { staticClass: "title" }, [
-                          _vm._v("Premium")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "big-value" }, [
-                          _vm._v(
-                            "\n                                R$ " +
-                              _vm._s(_vm.option.price) +
-                              " (" +
-                              _vm._s(
-                                (
-                                  (_vm.option.price / _vm.stock.current_price) *
-                                  100
-                                ).toFixed(2)
-                              ) +
-                              "%)\n                            "
-                          )
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "box mt-4" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Aumento de 10%")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (_vm.stock.current_price * 1.1).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Recompra com 5 dias")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(_vm.recompra10.call.premium.toFixed(2)) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Prejuizo")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (
-                                    _vm.option.price -
-                                    _vm.recompra10.call.premium
-                                  ).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Aumento de 15%")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (_vm.stock.current_price * 1.15).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v(
-                              "\n                                    Rolagem 28 Dias +15%\n                                "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(_vm.rolagem15.call.premium.toFixed(2)) +
-                                "\n                                    "
-                            ),
-                            _c(
-                              "span",
-                              { staticStyle: { "font-size": "12px" } },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.rolagem15.call.delta.toFixed(2))
-                                )
-                              ]
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Saldo")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (
-                                    _vm.rolagem15.call.premium -
-                                    (_vm.recompra10.call.premium -
-                                      _vm.option.price)
-                                  ).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "box mt-4" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Aumento de 20%")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (_vm.stock.current_price * 1.2).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Recompra com 5 dias")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(_vm.recompra20.call.premium.toFixed(2)) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Prejuizo")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (
-                                    _vm.option.price -
-                                    _vm.recompra20.call.premium
-                                  ).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Aumento de 25%")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (_vm.stock.current_price * 1.25).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v(
-                              "\n                                    Rolagem 28 Dias +25%\n                                "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(_vm.rolagem25.call.premium.toFixed(2)) +
-                                "\n                                    "
-                            ),
-                            _c(
-                              "span",
-                              { staticStyle: { "font-size": "12px" } },
-                              [
-                                _vm._v(
-                                  _vm._s(_vm.rolagem25.call.delta.toFixed(2))
-                                )
-                              ]
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-sm-4" }, [
-                          _c("div", { staticClass: "title" }, [
-                            _vm._v("Saldo")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "big-value" }, [
-                            _vm._v(
-                              "\n                                    R$\n                                    " +
-                                _vm._s(
-                                  (
-                                    _vm.rolagem25.call.premium -
-                                    (_vm.recompra20.call.premium -
-                                      _vm.option.price)
-                                  ).toFixed(2)
-                                ) +
-                                "\n                                "
-                            )
-                          ])
-                        ])
-                      ])
-                    ])
-                  ]),
+                  _c(
+                    "div",
+                    { staticClass: "modal-body" },
+                    [
+                      _c("op-simulator", {
+                        attrs: { option: _vm.option, stock: _vm.stock }
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
                     _c(
@@ -60589,7 +60401,242 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("Simulador")])
+  return _vm.calculated
+    ? _c("div", [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("div", { staticClass: "title" }, [_vm._v("Valor Atual")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "big-value" }, [
+              _vm._v("R$ " + _vm._s(_vm.stock.current_price))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("div", { staticClass: "title" }, [_vm._v("Strike")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "big-value" }, [
+              _vm._v(
+                "\n                R$ " +
+                  _vm._s(_vm.option.strike) +
+                  " (" +
+                  _vm._s(
+                    (
+                      ((_vm.option.strike - _vm.stock.current_price) /
+                        _vm.stock.current_price) *
+                      100
+                    ).toFixed(2)
+                  ) +
+                  "%)\n            "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4" }, [
+            _c("div", { staticClass: "title" }, [_vm._v("Premium")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "big-value" }, [
+              _vm._v(
+                "\n                R$ " +
+                  _vm._s(_vm.option.price) +
+                  " (" +
+                  _vm._s(
+                    (
+                      (_vm.option.price / _vm.stock.current_price) *
+                      100
+                    ).toFixed(2)
+                  ) +
+                  "%)\n            "
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "box mt-4" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Aumento de 10%")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s((_vm.stock.current_price * 1.1).toFixed(2)) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [
+                _vm._v("Recompra com 5 dias")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(_vm.recompra10.call.premium.toFixed(2)) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Prejuizo")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(
+                      (_vm.option.price - _vm.recompra10.call.premium).toFixed(
+                        2
+                      )
+                    ) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Aumento de 15%")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s((_vm.stock.current_price * 1.15).toFixed(2)) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [
+                _vm._v("Rolagem 28 Dias +15%")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(_vm.rolagem15.call.premium.toFixed(2)) +
+                    "\n                    "
+                ),
+                _c("span", { staticStyle: { "font-size": "12px" } }, [
+                  _vm._v(_vm._s(_vm.rolagem15.call.delta.toFixed(2)))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Saldo")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(
+                      (
+                        _vm.rolagem15.call.premium -
+                        (_vm.recompra10.call.premium - _vm.option.price)
+                      ).toFixed(2)
+                    ) +
+                    "\n                "
+                )
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "box mt-4" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Aumento de 20%")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s((_vm.stock.current_price * 1.2).toFixed(2)) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [
+                _vm._v("Recompra com 5 dias")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(_vm.recompra20.call.premium.toFixed(2)) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Prejuizo")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(
+                      (_vm.option.price - _vm.recompra20.call.premium).toFixed(
+                        2
+                      )
+                    ) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Aumento de 25%")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s((_vm.stock.current_price * 1.25).toFixed(2)) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [
+                _vm._v("Rolagem 28 Dias +25%")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(_vm.rolagem25.call.premium.toFixed(2)) +
+                    "\n                    "
+                ),
+                _c("span", { staticStyle: { "font-size": "12px" } }, [
+                  _vm._v(_vm._s(_vm.rolagem25.call.delta.toFixed(2)))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Saldo")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "big-value" }, [
+                _vm._v(
+                  "\n                    R$\n                    " +
+                    _vm._s(
+                      (
+                        _vm.rolagem25.call.premium -
+                        (_vm.recompra20.call.premium - _vm.option.price)
+                      ).toFixed(2)
+                    ) +
+                    "\n                "
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -73296,7 +73343,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OpSimulatorComponent_vue_vue_type_template_id_6e270505___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OpSimulatorComponent.vue?vue&type=template&id=6e270505& */ "./resources/js/components/OpSimulatorComponent.vue?vue&type=template&id=6e270505&");
 /* harmony import */ var _OpSimulatorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OpSimulatorComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/OpSimulatorComponent.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OpSimulatorComponent.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -73304,7 +73353,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _OpSimulatorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _OpSimulatorComponent_vue_vue_type_template_id_6e270505___WEBPACK_IMPORTED_MODULE_0__["render"],
   _OpSimulatorComponent_vue_vue_type_template_id_6e270505___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -73333,6 +73382,22 @@ component.options.__file = "resources/js/components/OpSimulatorComponent.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./OpSimulatorComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OpSimulatorComponent.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css& ***!
+  \*******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader??ref--6-1!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--6-2!../../../node_modules/vue-loader/lib??vue-loader-options!./OpSimulatorComponent.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/OpSimulatorComponent.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OpSimulatorComponent_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
